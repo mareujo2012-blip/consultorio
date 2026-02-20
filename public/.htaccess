@@ -1,0 +1,31 @@
+Options -Indexes
+Options +FollowSymLinks
+
+RewriteEngine On
+
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Allow direct access to real files/directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Route everything to index.php
+RewriteRule ^ index.php [L,QSA]
+
+# Security: block sensitive files
+<FilesMatch "\.(env|log|sh|sql|json|lock)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# PHP settings
+php_value upload_max_filesize 10M
+php_value post_max_size 12M
+php_value max_execution_time 60
+
+# Cache static assets
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|webp|woff2?)$">
+    Header set Cache-Control "max-age=2592000, public"
+</FilesMatch>

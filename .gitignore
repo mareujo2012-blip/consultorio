@@ -1,0 +1,25 @@
+# ── Git ──────────────────────────────────────────
+.env
+*.env.local
+
+# Uploads (only commit gitkeep files)
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Logs
+logs/
+!logs/.gitkeep
+
+# Composer
+vendor/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Build artifacts
+*.log
+*.gz
