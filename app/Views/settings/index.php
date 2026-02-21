@@ -35,39 +35,74 @@
                 <h2 class="text-xl font-display font-bold text-slate-900">Perfil do Profissional</h2>
             </div>
 
-            <form action="<?= $appUrl ?>/settings/user" method="POST"
-                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <form action="<?= $appUrl ?>/settings/user" method="POST" enctype="multipart/form-data" class="space-y-10">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
 
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Nome
-                        Completo</label>
-                    <input type="text" name="name" value="<?= htmlspecialchars($user['name'] ?? '') ?>" required
-                        class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-medium focus:outline-none transition-all"
-                        placeholder="Dr. Nome Exemplo">
+                <!-- User Photo -->
+                <div class="flex items-center gap-8 bg-slate-50/50 p-6 rounded-[2rem] border border-slate-100 mb-8">
+                    <div class="relative group w-24 h-24 rounded-full overflow-hidden bg-white flex items-center justify-center shadow-inner border border-slate-100"
+                        id="photo-preview-container">
+                        <?php if (!empty($user['photo'])): ?>
+                            <img id="user-photo-preview" src="<?= $appUrl . '/' . htmlspecialchars($user['photo']) ?>"
+                                alt="Sua Foto" class="w-full h-full object-cover">
+                        <?php else: ?>
+                            <img id="user-photo-preview" src="" class="w-full h-full object-cover hidden">
+                            <span id="user-photo-placeholder" class="text-blue-600 font-display font-black text-3xl">
+                                <?= strtoupper(substr($user['name'] ?? 'M', 0, 1)) ?>
+                            </span>
+                        <?php endif; ?>
+                        <label for="user_photo"
+                            class="absolute inset-0 bg-blue-600/80 opacity-0 group-hover:opacity-100 transition-all cursor-pointer flex items-center justify-center text-white text-[10px] font-black uppercase tracking-widest">Update</label>
+                    </div>
+                    <div>
+                        <p class="text-sm font-extrabold text-slate-800">Fotografia do Profissional</p>
+                        <p class="text-xs text-slate-400 font-medium mt-0.5">Visível internamente na plataforma.</p>
+                        <input type="file" name="user_photo" id="user_photo" accept="image/jpeg,image/png,image/webp"
+                            class="hidden"
+                            onchange="window.initCropper(this, 'user-photo-preview', 'user-photo-placeholder')">
+                        <label for="user_photo"
+                            class="mt-4 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-blue-600 hover:text-blue-800 transition-colors cursor-pointer">
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            Explorar Arquivo
+                        </label>
+                    </div>
                 </div>
 
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">E-mail de
-                        Acesso</label>
-                    <input type="email" name="email" value="<?= htmlspecialchars($user['email'] ?? '') ?>" required
-                        class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-medium focus:outline-none transition-all"
-                        placeholder="email@exemplo.com">
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Nome
+                            Completo</label>
+                        <input type="text" name="name" value="<?= htmlspecialchars($user['name'] ?? '') ?>" required
+                            class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-medium focus:outline-none transition-all"
+                            placeholder="Dr. Nome Exemplo">
+                    </div>
 
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Telefone
-                        Principal</label>
-                    <input type="text" name="phone" value="<?= htmlspecialchars($user['phone'] ?? '') ?>"
-                        class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-medium focus:outline-none transition-all phone-input"
-                        placeholder="(00) 00000-0000">
-                </div>
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">E-mail
+                            de
+                            Acesso</label>
+                        <input type="email" name="email" value="<?= htmlspecialchars($user['email'] ?? '') ?>" required
+                            class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-medium focus:outline-none transition-all"
+                            placeholder="email@exemplo.com">
+                    </div>
 
-                <div class="md:col-span-2 lg:col-span-3 flex justify-end">
-                    <button type="submit"
-                        class="btn-primary px-8 py-3.5 rounded-2xl text-xs font-bold shadow-xl active:scale-95 transition-all">Atualizar
-                        Perfil</button>
-                </div>
+                    <div class="space-y-2">
+                        <label
+                            class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Telefone
+                            Principal</label>
+                        <input type="text" name="phone" value="<?= htmlspecialchars($user['phone'] ?? '') ?>"
+                            class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-medium focus:outline-none transition-all phone-input"
+                            placeholder="(00) 00000-0000">
+                    </div>
+
+                    <div class="md:col-span-2 lg:col-span-3 flex justify-end">
+                        <button type="submit"
+                            class="btn-primary px-8 py-3.5 rounded-2xl text-xs font-bold shadow-xl active:scale-95 transition-all">Atualizar
+                            Perfil</button>
+                    </div>
             </form>
         </div>
 

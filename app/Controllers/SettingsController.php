@@ -36,10 +36,18 @@ class SettingsController extends BaseController
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
+        // Processa foto de perfil do médico caso enviada
+        if (!empty($_FILES['user_photo']['tmp_name']) && $_FILES['user_photo']['error'] === UPLOAD_ERR_OK) {
+            $photoPath = $this->handleUserPhotoUpload($_FILES['user_photo']);
+            if ($photoPath) {
+                $data['photo'] = $photoPath;
+            }
+        }
+
         $userModel->update($userId, $data);
         $_SESSION['user_name'] = $data['name'];
         (new AuditLog())->log('settings.user_update', "Dados do usuário #{$userId} atualizados");
-        $this->flashSuccess('Dados atualizados com sucesso!');
+        $this->flashSuccess('Dados e foto atualizados com sucesso!');
         $this->redirect('settings');
     }
 
@@ -131,6 +139,34 @@ class SettingsController extends BaseController
 
         if (move_uploaded_file($file['tmp_name'], $destPath)) {
             return 'uploads/logos/' . $filename;
+        }
+
+        return false;
+    }
+
+    private function handleUserPhotoUpload(array $file): string|false
+    {
+        $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
+        $maxSize = 2 * 1024 * 1024; // 2MB is more than enough for a cropped image
+
+        if (!in_array($file['type'], $allowedMimes) || $file['size'] > $maxSize) {
+            return false;
+        }
+
+        $dir = __DIR__ . '/../../public/uploads/users/';
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        if (!$ext) {
+            $ext = 'jpg';
+        }
+        $filename = 'user_' . time() . '_' . bin2hex(random_bytes(4)) . '.' . $ext;
+        $destPath = $dir . $filename;
+
+        if (move_uploaded_file($file['tmp_name'], $destPath)) {
+            return 'uploads/users/' . $filename;
         }
 
         return false;

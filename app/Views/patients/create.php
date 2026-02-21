@@ -47,7 +47,7 @@
                                 class="absolute inset-0 bg-blue-600/80 opacity-0 group-hover:opacity-100 transition-all cursor-pointer flex items-center justify-center text-white text-[10px] font-black uppercase tracking-widest">Update</label>
                         </div>
                         <input type="file" name="photo" id="photo" accept="image/jpeg,image/png,image/webp"
-                            class="hidden" onchange="previewPhoto(this)">
+                            class="hidden" onchange="window.initCropper(this, 'photo-preview', 'photo-placeholder')">
                     </div>
                     <div>
                         <p class="text-sm font-black text-slate-800 leading-tight">Biometria Facial</p>
@@ -176,19 +176,3 @@
         </form>
     </div>
 </div>
-
-<script>
-    function previewPhoto(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const preview = document.getElementById('photo-preview');
-                const placeholder = document.getElementById('photo-placeholder');
-                preview.src = e.target.result;
-                preview.classList.remove('hidden');
-                placeholder.classList.add('hidden');
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-</script>

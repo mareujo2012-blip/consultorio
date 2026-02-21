@@ -30,6 +30,9 @@
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <!-- Cropper.js -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 </head>
 
 <body class="min-h-screen bg-[#f1f5f9] text-slate-900 font-sans selection:bg-blue-500/10">
@@ -78,6 +81,7 @@
     </div>
 
     <?php include __DIR__ . '/../partials/scripts.php'; ?>
+    <?php include __DIR__ . '/../partials/cropper.php'; ?>
 </body>
 
 </html>
