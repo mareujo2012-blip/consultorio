@@ -19,28 +19,36 @@ class Router
 
     public function dispatch(): void
     {
-        $method = $_SERVER['REQUEST_METHOD'];
-        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        try {
+            $method = $_SERVER['REQUEST_METHOD'];
+            $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-        // Strip base path if in subdirectory
-        $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
-        if ($basePath !== '' && str_starts_with($uri, $basePath)) {
-            $uri = substr($uri, strlen($basePath));
-        }
-
-        $uri = '/' . ltrim($uri, '/');
-
-        foreach ($this->routes[$method] ?? [] as $routePath => $handler) {
-            $pattern = $this->compilePattern($routePath);
-            if (preg_match($pattern, $uri, $matches)) {
-                $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
-                $this->invokeHandler($handler, $params);
-                return;
+            // Strip base path if in subdirectory
+            $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+            if ($basePath !== '' && str_starts_with($uri, $basePath)) {
+                $uri = substr($uri, strlen($basePath));
             }
-        }
 
-        http_response_code(404);
-        include __DIR__ . '/../../app/Views/errors/404.php';
+            $uri = '/' . ltrim($uri, '/');
+
+            foreach ($this->routes[$method] ?? [] as $routePath => $handler) {
+                $pattern = $this->compilePattern($routePath);
+                if (preg_match($pattern, $uri, $matches)) {
+                    $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+                    $this->invokeHandler($handler, $params);
+                    return;
+                }
+            }
+
+            http_response_code(404);
+            $appUrl = ''; // Contextually set in base
+            include __DIR__ . '/../../app/Views/errors/404.php';
+        } catch (\Throwable $e) {
+            error_log($e->getMessage() . " in " . $e->getFile() . ":" . $e->getLine());
+            http_response_code(500);
+            $appUrl = ''; // Contextually set in base
+            include __DIR__ . '/../../app/Views/errors/500.php';
+        }
     }
 
     private function compilePattern(string $path): string
