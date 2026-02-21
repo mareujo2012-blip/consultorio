@@ -16,6 +16,9 @@ files_to_upload = [
     ('app/Views/auth/login.php', f'{FTP_ROOT}/app/Views/auth/login.php'),
     ('app/Views/dashboard/index.php', f'{FTP_ROOT}/app/Views/dashboard/index.php'),
     ('app/Views/partials/sidebar.php', f'{FTP_ROOT}/app/Views/partials/sidebar.php'),
+    ('app/Views/partials/topbar.php', f'{FTP_ROOT}/app/Views/partials/topbar.php'),
+    ('app/Views/financial/index.php', f'{FTP_ROOT}/app/Views/financial/index.php'),
+    ('app/Views/patients/index.php', f'{FTP_ROOT}/app/Views/patients/index.php'),
 ]
 
 ftp = ftplib.FTP()

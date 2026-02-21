@@ -1,139 +1,171 @@
-<?php $pageTitle = 'Financeiro'; ?>
-<?php $appUrl = rtrim($_ENV['APP_URL'] ?? '', '/'); ?>
+<?php $pageTitle = 'Intelligence Financeira'; ?>
 
-<div class="space-y-5">
-    <div class="flex items-center justify-between">
+<div class="space-y-8 animate-fade-in">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Controle Financeiro</h1>
-            <p class="text-sm text-slate-500"><?= count($entries) ?> atendimento(s) no período selecionado</p>
+            <h1 class="text-3xl font-display font-extrabold text-slate-900 tracking-tight">Intelligence Financeira</h1>
+            <p class="text-slate-500 font-medium mt-1"><?= count($entries) ?> atendimento(s) no período selecionado</p>
+        </div>
+        <div class="flex gap-2">
+            <button
+                class="bg-white border border-slate-200 px-5 py-2.5 rounded-2xl text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all shadow-sm">Exportar
+                PDF</button>
         </div>
     </div>
 
     <!-- Filter form -->
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-5">
-        <form method="GET" action="<?= $appUrl ?>/financial" class="flex flex-wrap items-end gap-4">
-            <div>
-                <label class="block text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide">De</label>
+    <div class="premium-card rounded-[2rem] p-6">
+        <form method="GET" action="<?= $appUrl ?>/financial" class="flex flex-wrap items-end gap-6">
+            <div class="space-y-2">
+                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">De</label>
                 <input type="date" name="from" value="<?= htmlspecialchars($from) ?>"
-                       class="border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                    class="input-premium rounded-xl px-4 py-3 text-sm focus:outline-none transition-all">
             </div>
-            <div>
-                <label class="block text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide">Até</label>
+            <div class="space-y-2">
+                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Até</label>
                 <input type="date" name="to" value="<?= htmlspecialchars($to) ?>"
-                       class="border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                    class="input-premium rounded-xl px-4 py-3 text-sm focus:outline-none transition-all">
             </div>
+
             <!-- Quick filters -->
-            <div class="flex gap-2">
+            <div class="flex gap-2 mb-0.5">
                 <?php
                 $today = date('Y-m-d');
                 $quickFilters = [
-                    'Hoje'     => ['from' => $today, 'to' => $today],
-                    'Semana'   => ['from' => date('Y-m-d', strtotime('monday this week')), 'to' => $today],
-                    'Mês'      => ['from' => date('Y-m-01'), 'to' => $today],
-                    'Ano'      => ['from' => date('Y-01-01'), 'to' => $today],
+                    'Hoje' => ['from' => $today, 'to' => $today],
+                    'Semana' => ['from' => date('Y-m-d', strtotime('monday this week')), 'to' => $today],
+                    'Mês' => ['from' => date('Y-m-01'), 'to' => $today],
+                    'Ano' => ['from' => date('Y-01-01'), 'to' => $today],
                 ];
                 foreach ($quickFilters as $label => $q): ?>
                     <a href="?from=<?= $q['from'] ?>&to=<?= $q['to'] ?>"
-                       class="px-3 py-2.5 text-xs font-medium rounded-xl border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                        class="px-4 py-3 text-xs font-bold rounded-xl border border-slate-100 bg-slate-50 text-slate-500 hover:bg-blue-600 hover:text-white hover:shadow-lg hover:shadow-blue-600/20 transition-all">
                         <?= $label ?>
                     </a>
                 <?php endforeach; ?>
             </div>
-            <button type="submit" class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-xl transition-all shadow-md">
-                Filtrar
+
+            <button type="submit"
+                class="btn-primary px-8 py-3 rounded-xl text-xs font-bold transition-all shadow-lg active:scale-95 ml-auto">
+                Atualizar Dados
             </button>
         </form>
     </div>
 
     <!-- Stats -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
-            <p class="text-xs text-slate-400 uppercase tracking-wide font-medium">Total Atendimentos</p>
-            <p class="text-3xl font-bold text-slate-800 dark:text-white mt-1"><?= $count ?></p>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="premium-card rounded-3xl p-6 border-l-4 border-l-slate-200">
+            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Volatilidade (Atendimentos)
+            </p>
+            <p class="text-3xl font-display font-black text-slate-900"><?= $count ?></p>
         </div>
-        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
-            <p class="text-xs text-slate-400 uppercase tracking-wide font-medium">Faturamento Total</p>
-            <p class="text-3xl font-bold text-emerald-600 mt-1">R$ <?= number_format($total, 2, ',', '.') ?></p>
+        <div class="premium-card rounded-3xl p-6 border-l-4 border-l-emerald-500">
+            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Receita Consolidada</p>
+            <p class="text-3xl font-display font-black text-emerald-600">R$ <?= number_format($total, 2, ',', '.') ?>
+            </p>
         </div>
-        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
-            <p class="text-xs text-slate-400 uppercase tracking-wide font-medium">Ticket Médio</p>
-            <p class="text-3xl font-bold text-violet-600 mt-1">R$ <?= number_format($avgTicket, 2, ',', '.') ?></p>
+        <div class="premium-card rounded-3xl p-6 border-l-4 border-l-blue-500">
+            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Performance por Paciente</p>
+            <p class="text-3xl font-display font-black text-blue-600">R$ <?= number_format($avgTicket, 2, ',', '.') ?>
+            </p>
         </div>
     </div>
 
     <!-- Chart -->
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-5">
-        <h3 class="text-base font-semibold text-slate-700 dark:text-slate-200 mb-4">Evolução do Faturamento</h3>
-        <canvas id="financialChart" height="120"></canvas>
+    <div class="premium-card rounded-[2.5rem] p-8">
+        <div class="flex items-center justify-between mb-8">
+            <h3 class="font-display font-bold text-lg text-slate-800">Evolução do Faturamento</h3>
+            <span
+                class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full uppercase tracking-widest border border-emerald-100">Live
+                analytics</span>
+        </div>
+        <div class="h-[300px]">
+            <canvas id="financialChart"></canvas>
+        </div>
     </div>
 
     <!-- Table -->
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-        <table class="w-full text-sm">
-            <thead class="bg-slate-50 dark:bg-slate-750 border-b border-slate-200 dark:border-slate-700">
-                <tr class="text-left text-xs text-slate-400 uppercase tracking-wider">
-                    <th class="px-5 py-3">Data</th>
-                    <th class="px-5 py-3">Paciente</th>
-                    <th class="px-5 py-3 hidden md:table-cell">CPF</th>
-                    <th class="px-5 py-3 hidden lg:table-cell">Pagamento</th>
-                    <th class="px-5 py-3 text-right">Valor</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-                <?php foreach ($entries as $e): ?>
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors">
-                    <td class="px-5 py-3 text-slate-500 text-xs"><?= date('d/m/Y H:i', strtotime($e['appointment_date'])) ?></td>
-                    <td class="px-5 py-3 font-medium text-slate-800 dark:text-slate-200">
-                        <a href="<?= $appUrl ?>/patients/<?= $e['patient_id'] ?>" class="hover:text-primary-600">
-                            <?= htmlspecialchars($e['patient_name']) ?>
-                        </a>
-                    </td>
-                    <td class="px-5 py-3 hidden md:table-cell text-slate-400 font-mono text-xs">
-                        <?= preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $e['patient_cpf'] ?? '') ?>
-                    </td>
-                    <td class="px-5 py-3 hidden lg:table-cell text-slate-500"><?= htmlspecialchars($e['payment_method'] ?: '—') ?></td>
-                    <td class="px-5 py-3 text-right font-bold text-emerald-600">R$ <?= number_format((float)$e['value'], 2, ',', '.') ?></td>
-                </tr>
-                <?php endforeach; ?>
-                <?php if (empty($entries)): ?>
-                    <tr><td colspan="5" class="px-5 py-10 text-center text-slate-400">Nenhum resultado para o período selecionado.</td></tr>
+    <div class="premium-card rounded-[2.5rem] p-8 overflow-hidden">
+        <div class="flex items-center justify-between mb-8">
+            <h3 class="font-display font-bold text-xl text-slate-900 tracking-tight">Extrato Detalhado</h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        <th class="px-6 pb-4">Data do Registro</th>
+                        <th class="px-6 pb-4">Paciente</th>
+                        <th class="px-6 pb-4 hidden md:table-cell">CPF Identificado</th>
+                        <th class="px-6 pb-4 text-right">Valor Líquido</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <?php foreach ($entries as $e): ?>
+                        <tr class="group hover:bg-slate-50/50 transition-all">
+                            <td class="px-6 py-5 text-xs font-medium text-slate-500">
+                                <?= date('d/m/Y • H:i', strtotime($e['appointment_date'])) ?></td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                        <?= strtoupper(substr($e['patient_name'], 0, 1)) ?>
+                                    </div>
+                                    <span class="text-sm font-bold text-slate-700">
+                                        <a href="<?= $appUrl ?>/patients/<?= $e['patient_id'] ?>"
+                                            class="hover:text-blue-600">
+                                            <?= htmlspecialchars($e['patient_name']) ?>
+                                        </a>
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 hidden md:table-cell text-slate-400 font-mono text-[10px]">
+                                <?= preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $e['patient_cpf'] ?? '') ?>
+                            </td>
+                            <td class="px-6 py-5 text-right font-display font-bold text-slate-900 text-base">
+                                R$ <?= number_format((float) $e['value'], 2, ',', '.') ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+                <?php if (!empty($entries)): ?>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="px-6 py-8 text-right font-display font-medium text-slate-400">Total
+                                Acumulado</td>
+                            <td class="px-6 py-8 text-right font-display font-black text-emerald-600 text-2xl">R$
+                                <?= number_format($total, 2, ',', '.') ?></td>
+                        </tr>
+                    </tfoot>
                 <?php endif; ?>
-            </tbody>
-            <?php if (!empty($entries)): ?>
-            <tfoot class="bg-slate-50 dark:bg-slate-750 border-t border-slate-200 dark:border-slate-700">
-                <tr>
-                    <td colspan="4" class="px-5 py-3 text-sm font-semibold text-slate-600 dark:text-slate-300">Total</td>
-                    <td class="px-5 py-3 text-right font-bold text-emerald-600 text-base">R$ <?= number_format($total, 2, ',', '.') ?></td>
-                </tr>
-            </tfoot>
-            <?php endif; ?>
-        </table>
+            </table>
+        </div>
     </div>
 </div>
 
 <script>
-new Chart(document.getElementById('financialChart'), {
-    type: 'bar',
-    data: {
-        labels: <?= json_encode($chartLabels) ?>,
-        datasets: [{
-            label: 'Faturamento (R$)',
-            data: <?= json_encode($chartRevenue) ?>,
-            backgroundColor: 'rgba(16, 185, 129, 0.15)',
-            borderColor: 'rgba(16, 185, 129, 0.8)',
-            borderWidth: 2,
-            borderRadius: 6,
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: { callback: v => 'R$ ' + v.toLocaleString('pt-BR') }
+    Chart.defaults.color = '#94a3b8';
+    Chart.defaults.font.family = 'Plus Jakarta Sans';
+
+    new Chart(document.getElementById('financialChart'), {
+        type: 'bar',
+        data: {
+            labels: <?= json_encode($chartLabels) ?>,
+            datasets: [{
+                data: <?= json_encode($chartRevenue) ?>,
+                backgroundColor: '#10b981',
+                borderRadius: 8,
+                barThickness: 16,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { grid: { display: false }, ticks: { color: '#64748b', font: { weight: 'bold', size: 10 } } },
+                y: { grid: { color: '#f1f5f9' }, beginAtZero: true, ticks: { callback: v => 'R$ ' + v.toLocaleString('pt-BR') } }
             }
         }
-    }
-});
+    });
 </script>

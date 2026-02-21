@@ -32,7 +32,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 </head>
 
-<body class="min-h-screen bg-[#f8fafc] text-slate-900 font-sans selection:bg-blue-500/10">
+<body class="min-h-screen bg-[#f1f5f9] text-slate-900 font-sans selection:bg-blue-500/10">
 
     <div class="flex h-full min-h-screen">
         <!-- Sidebar -->

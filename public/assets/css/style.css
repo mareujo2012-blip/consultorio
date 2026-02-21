@@ -29,12 +29,10 @@ h4,
 }
 
 body {
-    background-color: #f8fafc;
+    background-color: #f1f5f9;
     color: hsl(var(--foreground));
-    background-image:
-        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%);
-    background-attachment: fixed;
+    background-image: none;
+    /* Removendo o gradiente para ser mais clean */
 }
 
 .premium-card {
