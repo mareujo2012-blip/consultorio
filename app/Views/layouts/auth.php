@@ -7,7 +7,7 @@
     <title>
         <?= isset($pageTitle) ? htmlspecialchars($pageTitle) . ' — ' : '' ?>ControleConsultório
     </title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?= asset('assets/css/style.css') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {

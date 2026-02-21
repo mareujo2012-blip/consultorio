@@ -60,17 +60,36 @@ if (isset($_SESSION['user_id'])) {
 
 // Error Handling & Environment
 $isProd = ($_ENV['APP_ENV'] ?? 'production') === 'production';
+$logFile = ROOT_PATH . '/storage/logs/error.log';
+
 if ($isProd) {
     ini_set('display_errors', '0');
     ini_set('display_startup_errors', '0');
     error_reporting(E_ALL);
-    // In production, log errors to a secure hidden file
     ini_set('log_errors', '1');
-    ini_set('error_log', ROOT_PATH . '/storage/logs/error.log');
+    ini_set('error_log', $logFile);
+
+    // Simple Log Rotation (5MB max)
+    if (file_exists($logFile) && filesize($logFile) > 5 * 1024 * 1024) {
+        @rename($logFile, $logFile . '.' . date('Ymd_His') . '.bak');
+    }
 } else {
     ini_set('display_errors', '1');
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
+}
+
+// ── Global Helpers ─────────────────────────────────────────────────────────
+
+/**
+ * Asset helper with cache busting (versioning by filemtime)
+ */
+function asset(string $path): string
+{
+    $publicPath = ROOT_PATH . '/public/' . ltrim($path, '/');
+    $version = file_exists($publicPath) ? filemtime($publicPath) : time();
+    $baseUrl = rtrim($_ENV['APP_URL'] ?? '', '/');
+    return $baseUrl . '/' . ltrim($path, '/') . '?v=' . $version;
 }
 
 // ── Method override ────────────────────────────────────────────────────────
