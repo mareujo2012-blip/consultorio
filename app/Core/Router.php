@@ -41,12 +41,12 @@ class Router
             }
 
             http_response_code(404);
-            $appUrl = ''; // Contextually set in base
+            $appUrl = rtrim($_ENV['APP_URL'] ?? '', '/');
             include __DIR__ . '/../../app/Views/errors/404.php';
         } catch (\Throwable $e) {
             error_log($e->getMessage() . " in " . $e->getFile() . ":" . $e->getLine());
             http_response_code(500);
-            $appUrl = ''; // Contextually set in base
+            $appUrl = rtrim($_ENV['APP_URL'] ?? '', '/');
             include __DIR__ . '/../../app/Views/errors/500.php';
         }
     }

@@ -11,8 +11,7 @@ abstract class BaseController
         $viewFile = __DIR__ . '/../../app/Views/' . str_replace('.', '/', $viewPath) . '.php';
 
         if (!file_exists($viewFile)) {
-            http_response_code(404);
-            die("View not found: {$viewPath}");
+            throw new \Exception("View [{$viewPath}] not found em [{$viewFile}].");
         }
 
         ob_start();
