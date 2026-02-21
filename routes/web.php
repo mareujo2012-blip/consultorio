@@ -9,6 +9,7 @@ use App\Controllers\MedicalRecordController;
 use App\Controllers\PrescriptionController;
 use App\Controllers\FinancialController;
 use App\Controllers\SettingsController;
+use App\Controllers\UserController;
 
 $router = new Router();
 
@@ -58,6 +59,13 @@ $router->get('/settings', [SettingsController::class, 'index']);
 $router->post('/settings/user', [SettingsController::class, 'updateUser']);
 $router->post('/settings/password', [SettingsController::class, 'updatePassword']);
 $router->post('/settings/clinic', [SettingsController::class, 'updateClinic']);
+
+// ── Users Management ──────────────────────────────────────────────────────
+$router->get('/users', [UserController::class, 'index']);
+$router->get('/users/create', [UserController::class, 'create']);
+$router->post('/users', [UserController::class, 'store']);
+$router->get('/users/{id}/edit', [UserController::class, 'edit']);
+$router->post('/users/{id}', [UserController::class, 'update']);
 
 // ── API (internal) ────────────────────────────────────────────────────────
 $router->get('/api/patients/search', function () {

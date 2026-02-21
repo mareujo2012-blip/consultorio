@@ -88,6 +88,7 @@ class AuthController extends BaseController
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_email'] = $user['email'];
+        $_SESSION['user_role'] = $user['role'] ?? 'secretary';
         $_SESSION['logged_at'] = time();
 
         (new AuditLog())->log('login', "Login realizado por {$user['email']}", $user['id']);

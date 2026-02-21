@@ -107,6 +107,7 @@ class MedicalRecordController extends BaseController
             $type = htmlspecialchars($entry['entry_type']);
             $content = nl2br(htmlspecialchars($entry['content']));
             $author = htmlspecialchars($entry['created_by_name'] ?? '');
+            $hash = htmlspecialchars($entry['content_hash'] ?? '');
             $entriesHtml .= "
             <div class='entry'>
                 <div class='entry-header'>
@@ -114,6 +115,9 @@ class MedicalRecordController extends BaseController
                     <span class='author'>por {$author}</span>
                 </div>
                 <div class='entry-content'>{$content}</div>
+                <div style='font-family: monospace; font-size: 8px; color: #a1a1aa; margin-top: 5px; word-break: break-all;'>
+                    SHA-256 Integrity Hash: {$hash}
+                </div>
             </div>";
         }
 

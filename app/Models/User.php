@@ -16,6 +16,12 @@ class User extends BaseModel
         return $stmt->fetch();
     }
 
+    public function listAll(): array
+    {
+        $stmt = $this->db->query("SELECT * FROM users ORDER BY name ASC");
+        return $stmt->fetchAll();
+    }
+
     public function verifyPassword(string $plain, string $hash): bool
     {
         return password_verify($plain, $hash);
