@@ -42,6 +42,16 @@ PACKAGES = [
         'url':    'https://api.github.com/repos/dompdf/php-svg-lib/zipball/1.0.2',
         'target': 'phenx/php-svg-lib',
     },
+    {
+        'name':   'sabberworm/php-css-parser',
+        'url':    'https://api.github.com/repos/sabberworm/PHP-CSS-Parser/zipball/8.4.0',
+        'target': 'sabberworm/php-css-parser',
+    },
+    {
+        'name':   'masterminds/html5',
+        'url':    'https://api.github.com/repos/Masterminds/html5-php/zipball/2.8.0',
+        'target': 'masterminds/html5',
+    },
 ]
 
 def log(msg):
@@ -122,13 +132,15 @@ def generate_autoloader(vendor_dir):
 
     # PSR-4 map
     psr4 = {
-        'Dompdf\\':   'dompdf/dompdf/src',
-        'FontLib\\':  'phenx/php-font-lib/src',
-        'Svg\\':      'phenx/php-svg-lib/src',
+        'Dompdf\\\\':   "array($vendorDir . '/dompdf/dompdf/src', $vendorDir . '/dompdf/dompdf/lib')",
+        'FontLib\\\\':  "array($vendorDir . '/phenx/php-font-lib/src')",
+        'Svg\\\\':      "array($vendorDir . '/phenx/php-svg-lib/src')",
+        'Sabberworm\\\\CSS\\\\': "array($vendorDir . '/sabberworm/php-css-parser/src')",
+        'Masterminds\\\\': "array($vendorDir . '/masterminds/html5/src')",
     }
 
     psr4_lines = '\n'.join(
-        f"    '{ns}' => array($vendorDir . '/{path}'),"
+        f"    '{ns}' => {path},"
         for ns, path in psr4.items()
     )
 

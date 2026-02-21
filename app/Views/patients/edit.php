@@ -22,7 +22,6 @@
     <div class="premium-card rounded-[2.5rem] p-10">
         <form action="<?= $appUrl ?>/patients/<?= $patient['id'] ?>" method="POST" enctype="multipart/form-data"
             class="space-y-12">
-            <input type="hidden" name="_method" value="PUT">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
 
             <!-- Identity Section -->
