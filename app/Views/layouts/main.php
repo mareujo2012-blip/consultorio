@@ -8,17 +8,18 @@
     <title>
         <?= isset($pageTitle) ? htmlspecialchars($pageTitle) . ' — ' : '' ?>ControleConsultório
     </title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif']
+                    },
                     colors: {
-                        primary: {
+                        brand: {
                             50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
                             400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
                             800: '#1e40af', 900: '#1e3a8a',
@@ -29,18 +30,9 @@
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
-    <style>
-        .sidebar-link {
-            @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-700 hover:text-white transition-all duration-150;
-        }
-
-        .sidebar-link.active {
-            @apply bg-primary-600 text-white shadow-md;
-        }
-    </style>
 </head>
 
-<body class="h-full bg-slate-100 dark:bg-slate-900 font-sans">
+<body class="min-h-screen bg-[#f8fafc] text-slate-900 font-sans selection:bg-blue-500/10">
 
     <div class="flex h-full min-h-screen">
         <!-- Sidebar -->
