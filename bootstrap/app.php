@@ -57,9 +57,35 @@ if (isset($_SESSION['user_id'])) {
     $_SESSION['logged_at'] = time();
 }
 
+// Error Handling & Environment
+$isProd = ($_ENV['APP_ENV'] ?? 'production') === 'production';
+if ($isProd) {
+    ini_set('display_errors', '0');
+    ini_set('display_startup_errors', '0');
+    error_reporting(E_ALL);
+    // In production, log errors to a secure hidden file
+    ini_set('log_errors', '1');
+    ini_set('error_log', ROOT_PATH . '/storage/logs/error.log');
+} else {
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
+}
+
 // ── Method override ────────────────────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['_method'])) {
     $_SERVER['REQUEST_METHOD'] = strtoupper($_POST['_method']);
+}
+
+// Session Regeneration (Fixation Defense)
+$regenerationInterval = 1800; // 30 minutes
+if (isset($_SESSION['last_regeneration'])) {
+    if (time() - $_SESSION['last_regeneration'] >= $regenerationInterval) {
+        session_regenerate_id(true);
+        $_SESSION['last_regeneration'] = time();
+    }
+} else {
+    $_SESSION['last_regeneration'] = time();
 }
 
 // ── Dispatch ───────────────────────────────────────────────────────────────

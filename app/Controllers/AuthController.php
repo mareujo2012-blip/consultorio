@@ -39,6 +39,17 @@ class AuthController extends BaseController
         }
         unset($_SESSION['captcha_answer']);
 
+        $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        $limitKey = 'login_attempts_' . md5($ip);
+        $attempts = $_SESSION[$limitKey] ?? 0;
+        $blockedUntil = $_SESSION['login_blocked_until_' . md5($ip)] ?? 0;
+
+        if (time() < $blockedUntil) {
+            $wait = ceil(($blockedUntil - time()) / 60);
+            $this->flashError("Muitas tentativas falhas. Tente novamente em {$wait} minuto(s).");
+            $this->redirect('login');
+        }
+
         if (empty($email) || empty($password)) {
             $this->flashError('E-mail e senha são obrigatórios.');
             $this->redirect('login');
@@ -48,9 +59,27 @@ class AuthController extends BaseController
         $user = $userModel->findByEmail($email);
 
         if (!$user || !$userModel->verifyPassword($password, $user['password'])) {
-            sleep(1); // Slow down brute force
-            $this->flashError('Credenciais inválidas.');
+            $_SESSION[$limitKey] = $attempts + 1;
+
+            if ($_SESSION[$limitKey] >= 5) {
+                // Block for 15 minutes
+                $_SESSION['login_blocked_until_' . md5($ip)] = time() + (15 * 60);
+                (new AuditLog())->log('security.brute_force', "IP {$ip} bloqueado temporariamente.");
+                $this->flashError('Muitas tentativas falhas. Conta bloqueada por 15 minutos.');
+            } else {
+                sleep(1); // Slow down
+                $this->flashError('Credenciais inválidas.');
+            }
             $this->redirect('login');
+        }
+
+        // Reset attempts
+        unset($_SESSION[$limitKey], $_SESSION['login_blocked_until_' . md5($ip)]);
+
+        // Check if password needs rehash (upgrade from bcrypt to argon2id)
+        if ($userModel->needsRehash($user['password'])) {
+            $userModel->updatePassword($user['id'], $password);
+            (new AuditLog())->log('security.password_upgrade', "Senha do usuário #{$user['id']} atualizada para Argon2id");
         }
 
         // Regenerate session id to prevent session fixation
