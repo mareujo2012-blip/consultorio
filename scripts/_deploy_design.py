@@ -29,6 +29,7 @@ files_to_upload = [
     ('app/Views/prescriptions/create.php', f'{FTP_ROOT}/app/Views/prescriptions/create.php'),
     ('app/Views/prescriptions/history.php', f'{FTP_ROOT}/app/Views/prescriptions/history.php'),
     ('app/Views/medical_records/timeline.php', f'{FTP_ROOT}/app/Views/medical_records/timeline.php'),
+    ('app/Views/errors/404.php', f'{FTP_ROOT}/app/Views/errors/404.php'),
 ]
 
 ftp = ftplib.FTP()
