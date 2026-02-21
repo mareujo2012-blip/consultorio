@@ -29,10 +29,10 @@
 
         <!-- Email Field -->
         <div class="space-y-2">
-            <label class="block text-sm font-semibold text-slate-700 ml-1">E-mail Profissional</label>
-            <input type="email" name="email" id="email" required autocomplete="email"
+            <label class="block text-sm font-semibold text-slate-700 ml-1">Login ou E-mail</label>
+            <input type="text" name="email" id="email" required autocomplete="email"
                 class="input-premium w-full text-slate-900 placeholder-slate-400 rounded-2xl px-5 py-4 text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
-                placeholder="nome@exemplo.com">
+                placeholder="nome@exemplo.com ou usuário">
         </div>
 
         <!-- Password Field -->
