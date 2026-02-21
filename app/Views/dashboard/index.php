@@ -8,10 +8,12 @@
             <p class="text-slate-500 font-medium mt-1">Bem-vindo, doutor. Aqui está o resumo da sua clínica.</p>
         </div>
         <div class="flex gap-3">
-            <button
+            <a href="<?= $appUrl ?>/financial/export" target="_blank"
                 class="bg-white border border-slate-200 px-5 py-2.5 rounded-2xl text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all shadow-sm">Relatório
-                Mensal</button>
-            <button class="btn-primary px-6 py-2.5 rounded-2xl text-xs font-bold transition-all">Nova Consulta</button>
+                Mensal</a>
+            <a href="<?= $appUrl ?>/appointments/create"
+                class="btn-primary px-6 py-2.5 rounded-2xl text-xs font-bold transition-all inline-block">Nova
+                Consulta</a>
         </div>
     </div>
 
@@ -59,7 +61,8 @@
             <div>
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Faturamento Bruto</p>
                 <p class="text-2xl font-display font-bold text-slate-900">R$
-                    <?= number_format($revenueMonth, 2, ',', '.') ?></p>
+                    <?= number_format($revenueMonth, 2, ',', '.') ?>
+                </p>
             </div>
         </div>
 
@@ -75,7 +78,8 @@
             <div>
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Média por Paciente</p>
                 <p class="text-2xl font-display font-bold text-slate-900">R$
-                    <?= number_format($avgTicket, 2, ',', '.') ?></p>
+                    <?= number_format($avgTicket, 2, ',', '.') ?>
+                </p>
             </div>
         </div>
     </div>
