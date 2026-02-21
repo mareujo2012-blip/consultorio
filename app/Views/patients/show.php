@@ -1,140 +1,195 @@
-<?php $pageTitle = htmlspecialchars($patient['name']); ?>
+<?php $pageTitle = 'Paciente: ' . htmlspecialchars($patient['name']); ?>
 <?php $appUrl = rtrim($_ENV['APP_URL'] ?? '', '/'); ?>
 
-<div class="space-y-5">
+<div class="space-y-8 animate-fade-in">
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div class="flex items-center gap-4">
-            <a href="<?= $appUrl ?>/patients" class="text-slate-400 hover:text-slate-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="flex items-center gap-6">
+            <a href="<?= $appUrl ?>/patients"
+                class="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-blue-600 hover:border-blue-100 transition-all shadow-sm">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
                 </svg>
             </a>
-            <!-- Patient avatar -->
-            <?php if (!empty($patient['photo'])): ?>
-                <img src="<?= $appUrl . '/' . htmlspecialchars($patient['photo']) ?>" alt=""
-                    class="w-16 h-16 rounded-2xl object-cover ring-4 ring-white dark:ring-slate-700 shadow-md">
-            <?php else: ?>
-                <div
-                    class="w-16 h-16 rounded-2xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 font-bold text-2xl shadow-md">
-                    <?= strtoupper(substr($patient['name'], 0, 1)) ?>
+            <div class="flex items-center gap-4">
+                <?php if (!empty($patient['photo'])): ?>
+                    <img src="<?= $appUrl . '/' . htmlspecialchars($patient['photo']) ?>" alt=""
+                        class="w-20 h-20 rounded-[2rem] object-cover ring-4 ring-white shadow-xl">
+                <?php else: ?>
+                    <div
+                        class="w-20 h-20 rounded-[2rem] bg-blue-50 text-blue-600 flex items-center justify-center text-3xl font-black border border-blue-100 shadow-xl">
+                        <?= strtoupper(substr($patient['name'], 0, 1)) ?>
+                    </div>
+                <?php endif; ?>
+                <div>
+                    <h1 class="text-3xl font-display font-extrabold text-slate-900 tracking-tight leading-tight">
+                        <?= htmlspecialchars($patient['name']) ?></h1>
+                    <div class="flex items-center gap-3 mt-1">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Reg:
+                            <?= str_pad($patient['id'], 5, '0', STR_PAD_LEFT) ?></span>
+                        <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Início:
+                            <?= date('d/m/Y', strtotime($patient['created_at'])) ?></span>
+                    </div>
                 </div>
-            <?php endif; ?>
-            <div>
-                <h1 class="text-2xl font-bold text-slate-800 dark:text-white">
-                    <?= htmlspecialchars($patient['name']) ?>
-                </h1>
-                <p class="text-sm text-slate-400">
-                    CPF:
-                    <?= preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $patient['cpf'] ?? '') ?>
-                    <?php if (!empty($patient['birth_date'])): ?>
-                        ·
-                        <?= date('d/m/Y', strtotime($patient['birth_date'])) ?>
-                    <?php endif; ?>
-                </p>
             </div>
         </div>
-        <div class="flex gap-2 flex-wrap">
+        <div class="flex gap-3">
             <a href="<?= $appUrl ?>/appointments/create?patient_id=<?= $patient['id'] ?>"
-                class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-xl shadow-md transition-all">
+                class="btn-primary px-6 py-3.5 rounded-2xl text-xs font-bold shadow-xl active:scale-95 transition-all flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                 </svg>
                 Novo Atendimento
             </a>
             <a href="<?= $appUrl ?>/patients/<?= $patient['id'] ?>/records"
-                class="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium px-4 py-2 rounded-xl shadow-md transition-all">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Prontuário
-            </a>
+                class="bg-slate-900 text-white px-6 py-3.5 rounded-2xl text-xs font-bold shadow-lg shadow-slate-200 hover:bg-slate-800 active:scale-95 transition-all">Prontuário
+                Digital</a>
             <a href="<?= $appUrl ?>/patients/<?= $patient['id'] ?>/edit"
-                class="inline-flex items-center gap-2 bg-slate-600 hover:bg-slate-700 text-white text-sm font-medium px-4 py-2 rounded-xl shadow-md transition-all">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                Editar
-            </a>
+                class="bg-white border border-slate-200 px-6 py-3.5 rounded-2xl text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all shadow-sm">Editar
+                Perfil</a>
         </div>
     </div>
 
-    <!-- Info grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <!-- Patient details card -->
-        <div
-            class="md:col-span-1 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-5 space-y-4">
-            <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Informações</h3>
+    <!-- Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Sidebar: Info Section -->
+        <div class="lg:col-span-4 space-y-8">
+            <div class="premium-card rounded-[2.5rem] p-8 space-y-8">
+                <div class="space-y-6">
+                    <p
+                        class="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] border-b border-slate-50 pb-4">
+                        Dados de Identificação</p>
 
-            <?php $fields = [
-                'E-mail' => $patient['email'],
-                'Telefone' => $patient['phone'] ? '(' . substr($patient['phone'], 0, 2) . ') ' . substr($patient['phone'], 2, 5) . '-' . substr($patient['phone'], 7) : null,
-                'Sexo' => match ($patient['sex'] ?? '') { 'M' => 'Masculino', 'F' => 'Feminino', 'O' => 'Outro', default => null},
-                'Endereço' => implode(', ', array_filter([$patient['address'], $patient['city'], $patient['state'], $patient['zip']])),
-                'Notas' => $patient['notes'],
-            ]; ?>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">CPF /
+                                Documento</p>
+                            <p class="text-sm font-black text-slate-700 font-mono">
+                                <?= preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $patient['cpf'] ?? 'Não informado') ?>
+                            </p>
+                        </div>
 
-            <?php foreach ($fields as $label => $value): ?>
-                <?php if (!empty($value)): ?>
-                    <div>
-                        <p class="text-xs text-slate-400 font-medium">
-                            <?= $label ?>
-                        </p>
-                        <p class="text-sm text-slate-700 dark:text-slate-300 mt-0.5">
-                            <?= htmlspecialchars($value) ?>
-                        </p>
+                        <?php if (!empty($patient['birth_date'])): ?>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Data de
+                                    Nascimento</p>
+                                <p class="text-sm font-black text-slate-700">
+                                    <?= date('d/m/Y', strtotime($patient['birth_date'])) ?></p>
+                            </div>
+                        <?php endif; ?>
+
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Gênero</p>
+                            <p class="text-sm font-black text-slate-700">
+                                <?= match ($patient['sex'] ?? '') { 'M' => 'Masculino', 'F' => 'Feminino', 'O' => 'Outro', default => 'Não especificado'} ?>
+                            </p>
+                        </div>
                     </div>
-                <?php endif; ?>
-            <?php endforeach; ?>
+                </div>
 
-            <div>
-                <p class="text-xs text-slate-400 font-medium">Cadastrado em</p>
-                <p class="text-sm text-slate-700 dark:text-slate-300 mt-0.5">
-                    <?= !empty($patient['created_at']) ? date('d/m/Y', strtotime($patient['created_at'])) : '—' ?>
-                </p>
+                <div class="space-y-6">
+                    <p
+                        class="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] border-b border-slate-50 pb-4">
+                        Canais de Contato</p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">E-mail
+                                Institucional</p>
+                            <p class="text-sm font-black text-blue-600 truncate">
+                                <?= htmlspecialchars($patient['email'] ?: 'Não cadastrado') ?></p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Telefone /
+                                WhatsApp</p>
+                            <p class="text-sm font-black text-slate-700">
+                                <?= htmlspecialchars($patient['phone'] ?: 'Não informado') ?></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <p
+                        class="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] border-b border-slate-50 pb-4">
+                        Localização</p>
+                    <p class="text-sm font-medium text-slate-600 leading-relaxed">
+                        <?= htmlspecialchars(implode(', ', array_filter([$patient['address'], $patient['city'], $patient['state']]))) ?: 'Endereço não preenchido' ?>
+                    </p>
+                </div>
             </div>
         </div>
 
-        <!-- Recent appointments -->
-        <div
-            class="md:col-span-2 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-5">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Atendimentos</h3>
-                <a href="<?= $appUrl ?>/appointments/create?patient_id=<?= $patient['id'] ?>"
-                    class="text-xs text-primary-600 hover:underline">+ novo</a>
+        <!-- Main Content: History -->
+        <div class="lg:col-span-8 space-y-8">
+            <div class="premium-card rounded-[2.5rem] p-10">
+                <div class="flex items-center justify-between mb-10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-8 bg-emerald-500 rounded-full"></div>
+                        <h3 class="text-2xl font-display font-black text-slate-900 tracking-tight">Cronograma de
+                            Atendimentos</h3>
+                    </div>
+                    <span
+                        class="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-2xl text-[10px] font-black uppercase tracking-widest">Histórico
+                        Ativo</span>
+                </div>
+
+                <?php
+                $appointmentModel = new \App\Models\Appointment();
+                $appts = $appointmentModel->listByPatient((int) $patient['id']);
+                ?>
+
+                <?php if (empty($appts)): ?>
+                    <div class="py-20 text-center bg-slate-50/50 rounded-[3rem] border-2 border-dashed border-slate-100">
+                        <p class="text-slate-400 font-bold">Nenhum registro de atendimento encontrado para este paciente.
+                        </p>
+                    </div>
+                <?php else: ?>
+                    <div class="space-y-4">
+                        <?php foreach ($appts as $apt): ?>
+                            <a href="<?= $appUrl ?>/appointments/<?= $apt['id'] ?>"
+                                class="flex items-center justify-between p-6 rounded-[2rem] border border-slate-100 bg-white hover:border-blue-200 hover:shadow-xl hover:shadow-blue-600/5 transition-all group">
+                                <div class="flex items-center gap-5">
+                                    <div
+                                        class="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-black text-slate-900">
+                                            <?= date('d/m/Y • H:i', strtotime($apt['appointment_date'])) ?></p>
+                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                                            <?= htmlspecialchars($apt['payment_method'] ?: 'Método não informado') ?></p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6">
+                                    <span
+                                        class="text-lg font-display font-black text-slate-900 group-hover:text-emerald-600 transition-colors">R$
+                                        <?= number_format((float) $apt['value'], 2, ',', '.') ?></span>
+                                    <div
+                                        class="w-10 h-10 rounded-full border border-slate-100 flex items-center justify-center text-slate-300 group-hover:text-blue-600 group-hover:border-blue-100 transition-all">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             </div>
 
-            <?php
-            $appointmentModel = new \App\Models\Appointment();
-            $appts = $appointmentModel->listByPatient((int) $patient['id']);
-            ?>
-
-            <?php if (empty($appts)): ?>
-                <div class="py-12 text-center text-slate-400 text-sm">Nenhum atendimento registrado.</div>
-            <?php else: ?>
-                <div class="space-y-3">
-                    <?php foreach ($appts as $apt): ?>
-                        <div
-                            class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
-                            <div>
-                                <p class="text-sm font-medium text-slate-800 dark:text-slate-200">
-                                    <?= date('d/m/Y H:i', strtotime($apt['appointment_date'])) ?>
-                                </p>
-                                <p class="text-xs text-slate-400 mt-0.5">
-                                    <?= htmlspecialchars($apt['payment_method'] ?: '') ?>
-                                </p>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="font-semibold text-emerald-600 text-sm">R$
-                                    <?= number_format((float) $apt['value'], 2, ',', '.') ?>
-                                </span>
-                                <a href="<?= $appUrl ?>/appointments/<?= $apt['id'] ?>"
-                                    class="text-xs text-primary-600 hover:underline">Ver →</a>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+            <!-- Notes/Observations -->
+            <?php if (!empty($patient['notes'])): ?>
+                <div class="premium-card rounded-[2.5rem] p-10 bg-blue-600 text-white shadow-2xl shadow-blue-600/20">
+                    <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 opacity-70">Observações Médicas
+                        Restritas</p>
+                    <div class="text-base font-medium leading-relaxed italic">
+                        "<?= htmlspecialchars($patient['notes']) ?>"
+                    </div>
                 </div>
             <?php endif; ?>
         </div>

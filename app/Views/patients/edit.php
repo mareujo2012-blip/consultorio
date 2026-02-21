@@ -1,152 +1,171 @@
-<?php $pageTitle = 'Editar Paciente'; ?>
+<?php $pageTitle = 'Editar Perfil: ' . htmlspecialchars($patient['name']); ?>
 <?php $appUrl = rtrim($_ENV['APP_URL'] ?? '', '/'); ?>
 
-<div class="max-w-3xl mx-auto space-y-5">
-    <div class="flex items-center gap-3">
-        <a href="<?= $appUrl ?>/patients/<?= $patient['id'] ?>"
-            class="text-slate-400 hover:text-slate-600 transition-colors">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-        </a>
-        <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Editar Paciente</h1>
+<div class="max-w-4xl mx-auto space-y-8 animate-fade-in">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+            <a href="<?= $appUrl ?>/patients/<?= $patient['id'] ?>"
+                class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-blue-600 hover:border-blue-100 transition-all shadow-sm">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+                </svg>
+            </a>
+            <div>
+                <h1 class="text-3xl font-display font-extrabold text-slate-900 tracking-tight">Editar Paciente</h1>
+                <p class="text-slate-500 font-medium mt-1">Atualize as informações cadastrais e de contato.</p>
+            </div>
+        </div>
     </div>
 
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+    <!-- Main Form Container -->
+    <div class="premium-card rounded-[2.5rem] p-10">
         <form action="<?= $appUrl ?>/patients/<?= $patient['id'] ?>" method="POST" enctype="multipart/form-data"
-            class="space-y-6">
+            class="space-y-12">
             <input type="hidden" name="_method" value="PUT">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
 
-            <!-- Photo -->
-            <div class="flex items-center gap-6">
-                <div class="relative group">
-                    <div class="w-24 h-24 rounded-2xl overflow-hidden bg-slate-100">
-                        <?php if (!empty($patient['photo'])): ?>
-                            <img id="photo-preview" src="<?= $appUrl . '/' . htmlspecialchars($patient['photo']) ?>" alt=""
-                                class="w-full h-full object-cover">
-                        <?php else: ?>
-                            <img id="photo-preview" src="" alt="" class="w-full h-full object-cover hidden">
-                            <div id="photo-placeholder"
-                                class="w-full h-full flex items-center justify-center text-slate-400 text-3xl font-bold">
-                                <?= strtoupper(substr($patient['name'], 0, 1)) ?>
-                            </div>
-                        <?php endif; ?>
-                        <label for="photo"
-                            class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center text-white text-xs font-medium rounded-2xl">
-                            Trocar foto
-                        </label>
-                    </div>
-                    <input type="file" name="photo" id="photo" accept="image/*" class="hidden"
-                        onchange="previewPhoto(this)">
+            <!-- Identity Section -->
+            <div class="space-y-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-1.5 h-6 bg-blue-600 rounded-full"></div>
+                    <h3 class="text-xl font-display font-bold text-slate-900">Identidade Atualizada</h3>
                 </div>
-                <div>
-                    <p class="text-sm font-medium text-slate-700 dark:text-slate-300">Foto do Paciente</p>
-                    <label for="photo"
-                        class="mt-2 inline-flex items-center gap-1.5 text-xs text-primary-600 hover:text-primary-700 cursor-pointer font-medium">
-                        Alterar imagem
-                    </label>
-                </div>
-            </div>
 
-            <hr class="border-slate-200 dark:border-slate-700">
-
-            <div>
-                <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Dados Pessoais</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="md:col-span-2">
-                        <label class="form-label">Nome Completo *</label>
-                        <input type="text" name="name" required value="<?= htmlspecialchars($patient['name']) ?>"
-                            class="form-input">
+                <div
+                    class="flex flex-col md:flex-row items-center gap-10 bg-slate-50/50 p-8 rounded-[2rem] border border-slate-100">
+                    <div class="relative group">
+                        <div class="w-28 h-28 rounded-[2rem] bg-white border border-slate-100 shadow-inner overflow-hidden"
+                            id="photo-preview-container">
+                            <?php if (!empty($patient['photo'])): ?>
+                                <img id="photo-preview" src="<?= $appUrl . '/' . htmlspecialchars($patient['photo']) ?>"
+                                    alt="" class="w-full h-full object-cover">
+                            <?php else: ?>
+                                <img id="photo-preview" src="" alt="" class="w-full h-full object-cover hidden">
+                                <div id="photo-placeholder"
+                                    class="w-full h-full flex items-center justify-center text-blue-600 font-display font-black text-3xl">
+                                    <?= strtoupper(substr($patient['name'], 0, 1)) ?>
+                                </div>
+                            <?php endif; ?>
+                            <label for="photo"
+                                class="absolute inset-0 bg-blue-600/80 opacity-0 group-hover:opacity-100 transition-all cursor-pointer flex items-center justify-center text-white text-[10px] font-black uppercase tracking-widest">Update</label>
+                        </div>
+                        <input type="file" name="photo" id="photo" accept="image/*" class="hidden"
+                            onchange="previewPhoto(this)">
                     </div>
                     <div>
-                        <label class="form-label">CPF *</label>
+                        <p class="text-sm font-black text-slate-800 leading-tight">Fotografia de Perfil</p>
+                        <p class="text-xs text-slate-400 font-medium mt-1">Clique na imagem ao lado para alterar o
+                            arquivo.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="md:col-span-2 lg:col-span-3 space-y-2">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Nome
+                            Completo *</label>
+                        <input type="text" name="name" required value="<?= htmlspecialchars($patient['name']) ?>"
+                            class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none transition-all">
+                    </div>
+                    <div class="space-y-2">
+                        <label
+                            class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Documento
+                            CPF *</label>
                         <input type="text" name="cpf" required
                             value="<?= htmlspecialchars(preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $patient['cpf'] ?? '')) ?>"
-                            class="form-input cpf-input">
+                            class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none transition-all cpf-input">
                     </div>
-                    <div>
-                        <label class="form-label">Data de Nascimento</label>
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Data de
+                            Nascimento</label>
                         <input type="date" name="birth_date"
-                            value="<?= htmlspecialchars($patient['birth_date'] ?? '') ?>" class="form-input">
+                            value="<?= htmlspecialchars($patient['birth_date'] ?? '') ?>"
+                            class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none transition-all">
                     </div>
-                    <div>
-                        <label class="form-label">Sexo</label>
-                        <select name="sex" class="form-input">
+                    <div class="space-y-2">
+                        <label
+                            class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Gênero</label>
+                        <select name="sex"
+                            class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none transition-all">
                             <option value="">Selecione</option>
                             <option value="M" <?= ($patient['sex'] ?? '') === 'M' ? 'selected' : '' ?>>Masculino</option>
                             <option value="F" <?= ($patient['sex'] ?? '') === 'F' ? 'selected' : '' ?>>Feminino</option>
                             <option value="O" <?= ($patient['sex'] ?? '') === 'O' ? 'selected' : '' ?>>Outro</option>
                         </select>
                     </div>
-                    <div>
-                        <label class="form-label">Telefone / WhatsApp</label>
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Fone
+                            Celular</label>
                         <input type="text" name="phone" value="<?= htmlspecialchars($patient['phone'] ?? '') ?>"
-                            class="form-input phone-input">
+                            class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none transition-all phone-input">
                     </div>
-                    <div class="md:col-span-2">
-                        <label class="form-label">E-mail</label>
+                    <div class="lg:col-span-2 space-y-2">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">E-mail
+                            de Contato</label>
                         <input type="email" name="email" value="<?= htmlspecialchars($patient['email'] ?? '') ?>"
-                            class="form-input">
+                            class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-medium focus:outline-none transition-all">
                     </div>
                 </div>
             </div>
 
-            <hr class="border-slate-200 dark:border-slate-700">
+            <div class="h-px bg-slate-100 rounded-full"></div>
 
-            <div>
-                <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Endereço</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="md:col-span-2">
-                        <label class="form-label">Logradouro</label>
+            <!-- Localization Section -->
+            <div class="space-y-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-1.5 h-6 bg-emerald-500 rounded-full"></div>
+                    <h3 class="text-xl font-display font-bold text-slate-900">Endereço e Prontuário</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="md:col-span-2 lg:col-span-3 space-y-2">
+                        <label
+                            class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Endereço
+                            de Residência</label>
                         <input type="text" name="address" value="<?= htmlspecialchars($patient['address'] ?? '') ?>"
-                            class="form-input">
+                            class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-medium focus:outline-none transition-all">
                     </div>
-                    <div>
-                        <label class="form-label">Cidade</label>
+                    <div class="space-y-2">
+                        <label
+                            class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Cidade</label>
                         <input type="text" name="city" value="<?= htmlspecialchars($patient['city'] ?? '') ?>"
-                            class="form-input">
+                            class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-medium focus:outline-none transition-all">
                     </div>
-                    <div>
-                        <label class="form-label">Estado</label>
+                    <div class="space-y-2">
+                        <label
+                            class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">UF</label>
                         <input type="text" name="state" value="<?= htmlspecialchars($patient['state'] ?? '') ?>"
-                            maxlength="2" class="form-input">
+                            maxlength="2"
+                            class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none transition-all uppercase">
                     </div>
-                    <div>
-                        <label class="form-label">CEP</label>
+                    <div class="space-y-2">
+                        <label
+                            class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">CEP</label>
                         <input type="text" name="zip" value="<?= htmlspecialchars($patient['zip'] ?? '') ?>"
-                            class="form-input">
+                            class="input-premium w-full rounded-2xl px-5 py-4 text-sm font-medium focus:outline-none transition-all">
                     </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Notas
+                        Clínicas / Alergias</label>
+                    <textarea name="notes" rows="4"
+                        class="input-premium w-full rounded-[2rem] px-6 py-5 text-sm font-medium focus:outline-none transition-all resize-none"><?= htmlspecialchars($patient['notes'] ?? '') ?></textarea>
                 </div>
             </div>
 
-            <div>
-                <label class="form-label">Observações</label>
-                <textarea name="notes" rows="3"
-                    class="form-input resize-none"><?= htmlspecialchars($patient['notes'] ?? '') ?></textarea>
-            </div>
-
-            <div class="flex items-center justify-end gap-3 pt-2">
+            <!-- CTA -->
+            <div class="flex items-center justify-end gap-6 pt-4">
                 <a href="<?= $appUrl ?>/patients/<?= $patient['id'] ?>"
-                    class="px-5 py-2.5 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-800">Cancelar</a>
+                    class="text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors uppercase tracking-widest">Descartar</a>
                 <button type="submit"
-                    class="px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl text-sm shadow-md transition-all">
-                    Salvar Alterações
+                    class="btn-primary px-10 py-4 rounded-2xl text-xs font-black uppercase tracking-[0.1em] shadow-xl shadow-blue-600/20 active:scale-95 transition-all">
+                    Confirmar Alterações
                 </button>
             </div>
         </form>
     </div>
 </div>
-
-<style>
-    .form-label {
-        @apply block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1.5;
-    }
-
-    .form-input {
-        @apply w-full border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all;
-    }
-</style>
 
 <script>
     function previewPhoto(input) {

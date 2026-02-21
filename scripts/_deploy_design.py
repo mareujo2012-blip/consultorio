@@ -19,7 +19,16 @@ files_to_upload = [
     ('app/Views/partials/topbar.php', f'{FTP_ROOT}/app/Views/partials/topbar.php'),
     ('app/Views/financial/index.php', f'{FTP_ROOT}/app/Views/financial/index.php'),
     ('app/Views/patients/index.php', f'{FTP_ROOT}/app/Views/patients/index.php'),
+    ('app/Views/patients/show.php', f'{FTP_ROOT}/app/Views/patients/show.php'),
+    ('app/Views/patients/create.php', f'{FTP_ROOT}/app/Views/patients/create.php'),
+    ('app/Views/patients/edit.php', f'{FTP_ROOT}/app/Views/patients/edit.php'),
     ('app/Views/settings/index.php', f'{FTP_ROOT}/app/Views/settings/index.php'),
+    ('app/Views/appointments/index.php', f'{FTP_ROOT}/app/Views/appointments/index.php'),
+    ('app/Views/appointments/show.php', f'{FTP_ROOT}/app/Views/appointments/show.php'),
+    ('app/Views/appointments/create.php', f'{FTP_ROOT}/app/Views/appointments/create.php'),
+    ('app/Views/prescriptions/create.php', f'{FTP_ROOT}/app/Views/prescriptions/create.php'),
+    ('app/Views/prescriptions/history.php', f'{FTP_ROOT}/app/Views/prescriptions/history.php'),
+    ('app/Views/medical_records/timeline.php', f'{FTP_ROOT}/app/Views/medical_records/timeline.php'),
 ]
 
 ftp = ftplib.FTP()
