@@ -132,6 +132,7 @@ def generate_autoloader(vendor_dir):
 
     # PSR-4 map
     psr4 = {
+        'App\\\\':      "array($baseDir . '/app')",
         'Dompdf\\\\':   "array($vendorDir . '/dompdf/dompdf/src', $vendorDir . '/dompdf/dompdf/lib')",
         'FontLib\\\\':  "array($vendorDir . '/phenx/php-font-lib/src')",
         'Svg\\\\':      "array($vendorDir . '/phenx/php-svg-lib/src')",
