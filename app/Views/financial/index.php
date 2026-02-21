@@ -8,9 +8,9 @@
             <p class="text-slate-500 font-medium mt-1"><?= count($entries) ?> atendimento(s) no período selecionado</p>
         </div>
         <div class="flex gap-2">
-            <button
+            <a href="<?= $appUrl ?>/financial/export?from=<?= $from ?>&to=<?= $to ?>" target="_blank"
                 class="bg-white border border-slate-200 px-5 py-2.5 rounded-2xl text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all shadow-sm">Exportar
-                PDF</button>
+                PDF</a>
         </div>
     </div>
 

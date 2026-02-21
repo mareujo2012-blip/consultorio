@@ -53,6 +53,7 @@ $router->get('/prescriptions/{id}/pdf', [PrescriptionController::class, 'pdf']);
 
 // ── Financial ─────────────────────────────────────────────────────────────
 $router->get('/financial', [FinancialController::class, 'index']);
+$router->get('/financial/export', [FinancialController::class, 'exportPdf']);
 
 // ── Settings ──────────────────────────────────────────────────────────────
 $router->get('/settings', [SettingsController::class, 'index']);
