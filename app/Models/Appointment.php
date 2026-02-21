@@ -82,7 +82,7 @@ class Appointment extends BaseModel
                     COUNT(*) AS total_appointments,
                     COALESCE(SUM(value), 0) AS total_revenue
              FROM appointments
-             WHERE appointment_date BETWEEN ? AND ?
+             WHERE DATE(appointment_date) BETWEEN ? AND ?
              GROUP BY period
              ORDER BY period ASC"
         );

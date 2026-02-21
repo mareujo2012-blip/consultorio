@@ -22,9 +22,9 @@ class DashboardController extends BaseController
         $avgTicket = $appointmentsMonth > 0 ? $revenueMonth / $appointmentsMonth : 0;
         $recentAppointments = $appointmentModel->listRecent(8);
 
-        // Chart data last 30 days
-        $from = date('Y-m-d', strtotime('-29 days'));
-        $to = date('Y-m-d');
+        // Chart data for current month (includes future scheduled appts)
+        $from = date('Y-m-01');
+        $to = date('Y-m-t');
         $chartData = $appointmentModel->chartData($from, $to, 'day');
 
         $chartLabels = array_column($chartData, 'period');
