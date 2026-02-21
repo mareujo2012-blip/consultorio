@@ -1,3 +1,17 @@
+<?php
+$appUrl = rtrim($_ENV['APP_URL'] ?? '', '/');
+$currentUri = $_SERVER['REQUEST_URI'] ?? '/';
+$basePath = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+$currentPath = ltrim(str_replace($basePath, '', parse_url($currentUri, PHP_URL_PATH)), '/');
+
+function navActive(string $prefix, string $currentPath): string
+{
+    return str_starts_with($currentPath, $prefix) || $currentPath === $prefix ? 'active' : '';
+}
+
+$clinic = (new \App\Models\ClinicSettings())->getSettings();
+$clinicName = $clinic['name'] ?? 'ControleConsultório';
+?>
 <aside
     class="w-72 bg-white text-slate-600 flex flex-col h-[calc(100vh-2rem)] fixed inset-y-4 left-4 z-30 rounded-3xl border border-slate-200/50 shadow-xl shadow-slate-200/50 transition-all duration-300"
     id="sidebar">
