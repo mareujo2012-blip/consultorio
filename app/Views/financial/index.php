@@ -34,9 +34,9 @@
                 $today = date('Y-m-d');
                 $quickFilters = [
                     'Hoje' => ['from' => $today, 'to' => $today],
-                    'Semana' => ['from' => date('Y-m-d', strtotime('monday this week')), 'to' => $today],
-                    'Mês' => ['from' => date('Y-m-01'), 'to' => $today],
-                    'Ano' => ['from' => date('Y-01-01'), 'to' => $today],
+                    'Semana' => ['from' => date('Y-m-d', strtotime('monday this week')), 'to' => date('Y-m-d', strtotime('sunday this week'))],
+                    'Mês' => ['from' => date('Y-m-01'), 'to' => date('Y-m-t')],
+                    'Ano' => ['from' => date('Y-01-01'), 'to' => date('Y-12-31')],
                 ];
                 foreach ($quickFilters as $label => $q): ?>
                     <a href="?from=<?= $q['from'] ?>&to=<?= $q['to'] ?>"
@@ -104,7 +104,8 @@
                     <?php foreach ($entries as $e): ?>
                         <tr class="group hover:bg-slate-50/50 transition-all">
                             <td class="px-6 py-5 text-xs font-medium text-slate-500">
-                                <?= date('d/m/Y • H:i', strtotime($e['appointment_date'])) ?></td>
+                                <?= date('d/m/Y • H:i', strtotime($e['appointment_date'])) ?>
+                            </td>
                             <td class="px-6 py-5">
                                 <div class="flex items-center gap-4">
                                     <div
@@ -134,7 +135,8 @@
                             <td colspan="3" class="px-6 py-8 text-right font-display font-medium text-slate-400">Total
                                 Acumulado</td>
                             <td class="px-6 py-8 text-right font-display font-black text-emerald-600 text-2xl">R$
-                                <?= number_format($total, 2, ',', '.') ?></td>
+                                <?= number_format($total, 2, ',', '.') ?>
+                            </td>
                         </tr>
                     </tfoot>
                 <?php endif; ?>

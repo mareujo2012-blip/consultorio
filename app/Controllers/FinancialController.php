@@ -13,7 +13,7 @@ class FinancialController extends BaseController
         $this->requireAuth();
 
         $from = $_GET['from'] ?? date('Y-m-01');
-        $to = $_GET['to'] ?? date('Y-m-d');
+        $to = $_GET['to'] ?? date('Y-m-t');
 
         $appointmentModel = new Appointment();
         $entries = $appointmentModel->financialReport($from, $to);
