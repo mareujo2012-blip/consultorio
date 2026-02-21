@@ -134,8 +134,8 @@ def generate_autoloader(vendor_dir):
     psr4 = {
         'App\\\\':      "array($baseDir . '/app')",
         'Dompdf\\\\':   "array($vendorDir . '/dompdf/dompdf/src', $vendorDir . '/dompdf/dompdf/lib')",
-        'FontLib\\\\':  "array($vendorDir . '/phenx/php-font-lib/src')",
-        'Svg\\\\':      "array($vendorDir . '/phenx/php-svg-lib/src')",
+        'FontLib\\\\':  "array($vendorDir . '/phenx/php-font-lib/src/FontLib')",
+        'Svg\\\\':      "array($vendorDir . '/phenx/php-svg-lib/src/Svg')",
         'Sabberworm\\\\CSS\\\\': "array($vendorDir . '/sabberworm/php-css-parser/src')",
         'Masterminds\\\\': "array($vendorDir . '/masterminds/html5/src')",
     }
